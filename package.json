@@ -1,0 +1,13 @@
+{
+  "name": "calendar-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": "https://github.com/BaziForYou/calendar-bot.git",
+  "author": "Mohammad amin Jafarian <amin.jafarian82@gmail.com>",
+  "license": "",
+  "private": true
+}
