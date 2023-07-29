@@ -5,11 +5,13 @@ import fs from 'fs';
 import path from 'path';
 import url from 'url';
 import urlJoin from 'url-join';
-import rp from 'request-promise';
+import { promisify } from "util";
+import request from "request";
 import dotenv from 'dotenv';
 import { Telegraf } from 'telegraf';
 
 dotenv.config()
+const rp = promisify(request);
 
 function getENV(envName) {
   if (process.env[envName] && process.env[envName].length === 0) {
@@ -33,8 +35,8 @@ async function isTimeApiAlive() {
     }
     await rp(options)
       .then(function (response) {
-        if (response && response.status && response.status) {
-          if (response.status === 'ok') {
+        if (response && response.body && response.body.status && response.body.status) {
+          if (response.body.status === 'ok') {
             resolve({apiWebsite: true, timeApiStatus: true})
           } else {
             resolve({apiWebsite: true, timeApiStatus: false})
@@ -67,9 +69,11 @@ async function getCurrentTimeFromAPI() {
       }
       await rp(options)
         .then(function (response) {
-          if (response && response.time && response.dates) {
+          if (response && response.body && response.body.time && response.body.dates) {
             callbackData.status = true
-            callbackData.data = response
+            callbackData.data = response.body
+            resolve(callbackData)
+          } else {
             resolve(callbackData)
           }
         })
@@ -108,9 +112,11 @@ async function getDayEvents(day, month, year, type) {
       }
       await rp(options)
         .then(function (response) {
-          if (response && response.events) {
+          if (response && response.body && response.body.events) {
             callbackData.status = true
-            callbackData.data = response
+            callbackData.data = response.body
+            resolve(callbackData)
+          } else {
             resolve(callbackData)
           }
         })
@@ -140,7 +146,6 @@ async function getMonthEvents(month, year) {
           year: year,
         }
       })
-      console.log(callingURL)
       const options = {
         method: 'GET',
         uri: callingURL,
@@ -148,9 +153,11 @@ async function getMonthEvents(month, year) {
       }
       await rp(options)
         .then(function (response) {
-          if (response) {
+          if (response && response.body) {
             callbackData.status = true
-            callbackData.data = response
+            callbackData.data = response.body
+            resolve(callbackData)
+          } else {
             resolve(callbackData)
           }
         })
