@@ -12,9 +12,11 @@
   "private": true,
   "dependencies": {
     "axios": "^1.4.0",
+    "canvas-gif": "^1.0.3",
     "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
     "request-promise": "^4.2.6",
+    "sharp": "^0.32.4",
     "telegraf": "^4.12.2",
     "url": "^0.11.1"
   }
